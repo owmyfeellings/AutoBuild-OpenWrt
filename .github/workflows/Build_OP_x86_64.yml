@@ -1,0 +1,136 @@
+#=================================================
+# Description: Build OpenWrt using GitHub Actions
+# Lisence: MIT
+# Author: eSirPlayground
+# Youtube Channel: https://goo.gl/fvkdwm
+#=================================================
+
+name: Build_x86_64
+
+on:
+  release:
+    types: [published]
+
+  #push:
+  #  branches:
+  #    - master
+
+  #schedule:
+  #  - cron: 0 8 * * 5
+
+  #watch:
+  #  types: [started]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Initialization environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo -E docker system prune -af
+          echo "Deleting files, please wait ..."
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /etc/mysql \
+            /etc/php
+          sudo -E apt-get -y purge \
+            azure-cli \
+            ghc* \
+            zulu* \
+            hhvm \
+            llvm* \
+            firefox \
+            google* \
+            dotnet* \
+            powershell \
+            openjdk* \
+            mysql* \
+            php*
+          sudo -E apt-get update
+          sudo -E apt-get upgrade -y
+          sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex node-uglify git gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx-ucl libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync aria2
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+
+      - name: Clone source code & Import external feeds
+        env:
+          REPO_URL: https://github.com/coolsnowwolf/lede
+          REPO_BRANCH: master
+        run: |
+          git clone --depth 1 $REPO_URL -b $REPO_BRANCH ./openwrt
+          echo "Start import external feeds and add into the config file"
+          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon ./my-feeds/luci-theme-argon
+          git clone -b 18.06 https://github.com/kiddin9/luci-theme-edge ./my-feeds/luci-theme-edge
+          git clone -b master https://github.com/sirpdboy/luci-theme-opentopd ./my-feeds/luci-theme-opentopd
+          git clone -b master https://github.com/esirplayground/luci-theme-atmaterial-ColorIcon ./my-feeds/luci-theme-atmaterial-ColorIcon
+          echo "src-link my_feeds $(cd ./my-feeds && pwd)" >> ./openwrt/feeds.conf.default
+          cat ./feeds-ext.conf >> ./openwrt/feeds.conf.default
+
+      - name: Update & Install feeds
+        working-directory: ./openwrt
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a -f -p owmyfeellings
+          ./scripts/feeds install -a -f
+
+      - name: Configuration Customization - Build_x86_64
+        env:
+          CONFIG_FILE: "x86_64.config"
+        run: |
+          [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+          chmod +x ./customize.sh && ./customize.sh
+          cd openwrt && make defconfig
+
+      - name: Download package
+        working-directory: ./openwrt
+        run: |
+          make download -j$(($(nproc) + 1)) V=s
+          make download -j$(($(nproc) + 1))
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
+
+      - name: Build firmware
+        working-directory: ./openwrt
+        run: |
+          echo -e "$(nproc) thread build."
+          make -j$(($(nproc) + 1)) V=s
+
+      #- name: Upload artifact
+      #  uses: actions/upload-artifact@master
+      #  with:
+      #    name: openwrt
+      #    path: openwrt/bin
+
+      - name: Prepare to upload
+        run: |
+          cd ./openwrt/bin
+          zip -r ../../openwrt.zip ./
+
+      - name: Delete old release
+        uses: dev-drprasad/delete-tag-and-release@master
+        with:
+          delete_release: true
+          tag_name: "openwrt"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload to release
+        uses: xresloader/upload-to-github-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "openwrt.zip"
+          branches: "master"
+          tag_name: "openwrt"
+          tags: true
+          draft: false
+          overwrite: true
+          verbose: true
