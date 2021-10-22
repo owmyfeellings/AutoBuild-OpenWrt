@@ -93,7 +93,6 @@ jobs:
         working-directory: ./openwrt
         run: |
           make download -j$(($(nproc) + 1)) V=s
-          make download -j$(($(nproc) + 1))
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
