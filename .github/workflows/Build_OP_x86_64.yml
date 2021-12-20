@@ -41,7 +41,7 @@ jobs:
             /usr/share/dotnet \
             /etc/mysql \
             /etc/php
-          sudo -E apt-get purge --fix-broken -y \
+          sudo -E apt-get purge -y \
             azure-cli \
             ghc* \
             zulu* \
@@ -52,7 +52,7 @@ jobs:
             dotnet* \
             powershell \
             openjdk* \
-            mysql* \
+            #mysql* \
             php*
           sudo -E apt-get update
           sudo -E apt-get upgrade -y
