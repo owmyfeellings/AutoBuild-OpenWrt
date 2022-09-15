@@ -8,7 +8,6 @@
 
 pushd ./openwrt
 sed -i 's/192.168.1.1/192.168.10.2/g' ./package/base-files/files/bin/config_generate
-sed -i 's/luci-app-samba/luci-app-samba4/g' ./package/lean/autosamba/Makefile
 sed -i 's#root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::#root::0:0:99999:7:::#g' ./package/lean/default-settings/files/zzz-default-settings
 rm -rf ./package/lean/luci-theme-argon
 popd
