@@ -37,10 +37,10 @@ jobs:
         run: |
           sudo -E docker system prune -af
           echo "Deleting files, please wait ..."
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /etc/mysql \
-            /etc/php
+          #sudo rm -rf \
+          #  /usr/share/dotnet \
+          #  /etc/mysql \
+          #  /etc/php
           #sudo -E apt-get purge -y \
           #  azure-cli \
           #  ghc* \
@@ -52,7 +52,7 @@ jobs:
           #  dotnet* \
           #  powershell \
           #  openjdk* \
-          #  php*
+          #  php* \
           #  mysql*
           sudo -E apt-get update
           sudo -E apt-get upgrade -y
