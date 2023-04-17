@@ -9,11 +9,12 @@
 pushd ./openwrt
 sed -i 's/192.168.1.1/192.168.10.2/g' ./package/base-files/files/bin/config_generate
 sed -i 's#$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.##g' ./package/lean/default-settings/files/zzz-default-settings
-rm -rf ./package/lean/luci-theme-argon
+sed -i '/luci.main.mediaurlbase/d' .package/feeds/luci/luci-theme-design/root/etc/uci-defaults/30_luci-theme-design
+#rm -rf ./package/lean/luci-theme-argon
 popd
 
 pushd ./openwrt/feeds/packages
-git apply $(find $HOME/ -name "patches-packages" -type d)/*.patch
+#git apply $(find $HOME/ -name "patches-packages" -type d)/*.patch
 popd
 
 pushd ./my-feeds

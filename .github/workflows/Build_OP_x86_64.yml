@@ -72,7 +72,7 @@ jobs:
           git clone -b master https://github.com/sirpdboy/luci-theme-opentopd ./my-feeds/luci-theme-opentopd
           git clone -b master https://github.com/esirplayground/luci-theme-atmaterial-ColorIcon ./my-feeds/luci-theme-atmaterial-ColorIcon
           git clone -b master https://github.com/jerrykuku/luci-app-argon-config ./my-feeds/luci-app-argon-config
-          git clone -b master https://github.com/sirpdboy/luci-app-netdata ./my-feeds/luci-app-netdata
+          #git clone -b master https://github.com/sirpdboy/luci-app-netdata ./my-feeds/luci-app-netdata
           echo "src-link my_feeds $(cd ./my-feeds && pwd)" >> ./openwrt/feeds.conf.default
           cat ./feeds-ext.conf >> ./openwrt/feeds.conf.default
 
