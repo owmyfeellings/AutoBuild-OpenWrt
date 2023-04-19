@@ -74,7 +74,6 @@ jobs:
           git clone -b master https://github.com/sirpdboy/luci-theme-opentopd ./luci-theme-opentopd
           git clone -b master https://github.com/esirplayground/luci-theme-atmaterial-ColorIcon ./luci-theme-atmaterial-ColorIcon
           git clone -b master https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
-          git clone -b master https://github.com/sirpdboy/luci-app-netdata ./luci-app-netdata
           git clone -b main https://github.com/thinktip/luci-theme-neobird ./luci-theme-neobird
           git clone -b master https://github.com/Leo-Jo-My/luci-theme-opentomcat ./luci-theme-opentomcat
           popd
