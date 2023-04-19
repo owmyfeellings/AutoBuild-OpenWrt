@@ -21,11 +21,12 @@ on:
   #watch:
   #  types: [started]
 
+  repository_dispatch:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -35,27 +36,26 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo -E docker system prune -af
-          echo "Deleting files, please wait ..."
-          #sudo rm -rf \
-          #  /usr/share/dotnet \
-          #  /etc/mysql \
-          #  /etc/php
-          #sudo -E apt-get purge -y \
-          #  azure-cli \
-          #  ghc* \
-          #  zulu* \
-          #  hhvm \
-          #  llvm* \
-          #  firefox \
-          #  google* \
-          #  dotnet* \
-          #  powershell \
-          #  openjdk* \
-          #  php* \
-          #  mysql*
+          set +e
+          docker rmi `docker images -q`
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /etc/mysql \
+            /etc/php
+          sudo -E apt-get -y purge \
+            azure-cli \
+            ghc* \
+            zulu* \
+            hhvm \
+            llvm* \
+            firefox \
+            google* \
+            dotnet* \
+            powershell \
+            openjdk* \
+            mysql* \
+            php*
           sudo -E apt-get update
-          sudo -E apt-get upgrade -y
           sudo -E apt-get -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
@@ -66,7 +66,10 @@ jobs:
           REPO_BRANCH: master
         run: |
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH ./openwrt
-          echo "Start import external feeds and add into the config file"
+          cat ./feeds-ext.conf >> ./openwrt/feeds.conf.default
+
+      - name: Import external feeds
+        run: |
           mkdir -p ./my-feeds
           pushd ./my-feeds
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon ./luci-theme-argon
@@ -78,14 +81,13 @@ jobs:
           git clone -b master https://github.com/Leo-Jo-My/luci-theme-opentomcat ./luci-theme-opentomcat
           popd
           echo "src-link my_feeds $(cd ./my-feeds && pwd)" >> ./openwrt/feeds.conf.default
-          cat ./feeds-ext.conf >> ./openwrt/feeds.conf.default
 
       - name: Update & Install feeds
         working-directory: ./openwrt
         run: |
           ./scripts/feeds update -a
-          ./scripts/feeds install -a -f -p owmyfeellings
           ./scripts/feeds install -a -f -p my_feeds
+          ./scripts/feeds install -a -f -p owmyfeellings
           ./scripts/feeds install -a -f
 
       - name: Configuration Customization - Build_x86_64
@@ -100,14 +102,12 @@ jobs:
         working-directory: ./openwrt
         run: |
           make download -j$(($(nproc) + 1)) V=s
-          find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
       - name: Build firmware
         working-directory: ./openwrt
         run: |
-          echo -e "$(nproc) thread build."
-          make -j$(($(nproc) + 1)) V=s
+          make -j$(nproc) V=s
 
       - name: Upload artifact
         uses: actions/upload-artifact@master
