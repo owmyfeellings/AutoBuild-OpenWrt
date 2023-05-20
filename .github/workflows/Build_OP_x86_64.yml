@@ -79,6 +79,7 @@ jobs:
           git clone -b master https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
           git clone -b main https://github.com/thinktip/luci-theme-neobird ./luci-theme-neobird
           git clone -b master https://github.com/Leo-Jo-My/luci-theme-opentomcat ./luci-theme-opentomcat
+          git clone -b main https://github.com/sirpdboy/chatgpt-web ./luci-app-chatgpt
           popd
           echo "src-link my_feeds $(cd ./my-feeds && pwd)" >> ./openwrt/feeds.conf.default
 
