@@ -129,7 +129,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to release
-        uses: svenstaro/upload-release-action@master
+        uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: "openwrt.zip"
@@ -137,3 +137,4 @@ jobs:
           file_glob: true
           overwrite: true
           prerelease: false
+          make_latest: true
