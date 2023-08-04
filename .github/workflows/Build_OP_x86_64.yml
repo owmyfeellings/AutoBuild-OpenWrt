@@ -32,31 +32,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Initialization environment
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
           set +e
-          docker rmi `docker images -q`
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /etc/mysql \
-            /etc/php
-          sudo -E apt-get -y purge \
-            azure-cli \
-            ghc* \
-            zulu* \
-            hhvm \
-            llvm* \
-            firefox \
-            google* \
-            dotnet* \
-            powershell \
-            openjdk* \
-            mysql* \
-            php*
           sudo -E apt-get update
-          sudo -E apt-get -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+          sudo -E apt-get -y upgrade
+          sudo -E apt-get -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev npm
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
 
@@ -67,16 +61,13 @@ jobs:
         run: |
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH ./openwrt
           cat ./feeds-ext.conf >> ./openwrt/feeds.conf.default
-
-      - name: Import external feeds
-        run: |
           mkdir -p ./my-feeds
           pushd ./my-feeds
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon ./luci-theme-argon
           git clone -b 18.06 https://github.com/kiddin9/luci-theme-edge ./luci-theme-edge
           git clone -b master https://github.com/sirpdboy/luci-theme-opentopd ./luci-theme-opentopd
           git clone -b master https://github.com/esirplayground/luci-theme-atmaterial-ColorIcon ./luci-theme-atmaterial-ColorIcon
-          git clone -b master https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
+          git clone -b 18.06 https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
           git clone -b main https://github.com/thinktip/luci-theme-neobird ./luci-theme-neobird
           git clone -b master https://github.com/Leo-Jo-My/luci-theme-opentomcat ./luci-theme-opentomcat
           git clone -b main https://github.com/sirpdboy/chatgpt-web ./luci-app-chatgpt
