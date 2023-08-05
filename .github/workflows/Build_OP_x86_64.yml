@@ -20,8 +20,6 @@ on:
 
   #watch:
   #  types: [started]
-
-  repository_dispatch:
   workflow_dispatch:
 
 jobs:
@@ -93,7 +91,7 @@ jobs:
       - name: Download package
         working-directory: ./openwrt
         run: |
-          make download -j$(($(nproc) + 1)) V=s
+          make download -j$(nproc) V=s
           find dl -size -1024c -exec rm -f {} \;
 
       - name: Build firmware
@@ -107,25 +105,13 @@ jobs:
           name: openwrt
           path: openwrt/bin
 
-      - name: Compress built files
-        run: |
-          cd ./openwrt/bin
-          zip -r ../../openwrt.zip ./
-
-      - name: Delete old release
-        uses: dev-drprasad/delete-tag-and-release@master
-        with:
-          delete_release: true
-          tag_name: "openwrt"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Upload to release
-        uses: svenstaro/upload-release-action@master
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: "./openwrt.zip"
-          tag: "openwrt"
-          file_glob: true
-          overwrite: true
-          prerelease: false
-          make_latest: true
+        run: |
+          set +e
+          pushd ./openwrt/bin
+          zip -9mvr ../../openwrt.zip ./
+          popd
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh release delete openwrt -y --cleanup-tag
+          gh release create openwrt openwrt.zip --latest
+  
