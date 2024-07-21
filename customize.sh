@@ -6,15 +6,16 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
+echo "home dir is: "$HOME
+echo "current dir is: "$PWD
+#tree -a -C -f ./openwrt
+
 pushd ./openwrt
 sed -i 's/192.168.1.1/192.168.10.2/g' ./package/base-files/files/bin/config_generate
 sed -i 's#$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.##g' ./package/lean/default-settings/files/zzz-default-settings
-sed -i '/luci.main.mediaurlbase/d' .package/feeds/luci/luci-theme-design/root/etc/uci-defaults/30_luci-theme-design
+sed -i '/luci.main.mediaurlbase/d' ./package/feeds/luci/luci-theme-design/root/etc/uci-defaults/30_luci-theme-design
+sed -i '/luci.main.mediaurlbase/d' ./package/feeds/infinityfreedom_ng/luci-theme-infinityfreedom-ng/files/11_luci-theme-infinityfreedom-ng
 popd
-
-#pushd ./openwrt/feeds/packages
-#git apply $(find $HOME/ -name "patches" -type d)/*.patch
-#popd
 
 pushd ./my-feeds
 sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-atmaterial-ColorIcon" -type d) -name "30_luci-theme-atmaterial_ci" -type f)
