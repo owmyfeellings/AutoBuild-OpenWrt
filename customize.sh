@@ -23,4 +23,5 @@ sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-edge" -typ
 sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-opentopd" -type d) -name "30_luci-theme-opentopd" -type f)
 sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-neobird" -type d) -name "30_luci-theme-neobird" -type f)
 sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-opentomcat" -type d) -name "30_luci-theme-opentomcat" -type f)
+sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-infinityfreedom-ng" -type d) -name "11_luci-theme-infinityfreedom-ng" -type f)
 popd
