@@ -9,7 +9,8 @@
 pushd ./openwrt
 sed -i 's/192.168.1.1/192.168.10.2/g' ./package/base-files/files/bin/config_generate
 sed -i 's#$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.##g' ./package/lean/default-settings/files/zzz-default-settings
-sed -i '/luci.main.mediaurlbase/d' .package/feeds/luci/luci-theme-design/root/etc/uci-defaults/30_luci-theme-design
+sed -i '/luci.main.mediaurlbase/d' ./package/feeds/luci/luci-theme-design/root/etc/uci-defaults/30_luci-theme-design
+sed -i '/luci.main.mediaurlbase/d' ./package/feeds/infinityfreedom_ng/luci-theme-infinityfreedom-ng/files/11_luci-theme-infinityfreedom-ng
 popd
 
 #pushd ./openwrt/feeds/packages
@@ -23,5 +24,4 @@ sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-edge" -typ
 sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-opentopd" -type d) -name "30_luci-theme-opentopd" -type f)
 sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-neobird" -type d) -name "30_luci-theme-neobird" -type f)
 sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-opentomcat" -type d) -name "30_luci-theme-opentomcat" -type f)
-sed -i '/luci.main.mediaurlbase/d' $(find $(find ./ -name "luci-theme-infinityfreedom-ng" -type d) -name "11_luci-theme-infinityfreedom-ng" -type f)
 popd
