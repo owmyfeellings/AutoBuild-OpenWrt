@@ -19,6 +19,9 @@ sed -i 's#'$(grep -E -a --line-buffered 'GEOSITE_VER:=' ./Makefile)'#GEOSITE_VER
 sed -i 's#'$(grep -E -a --line-buffered 'HASH:=' ./Makefile)'#HASH:=skip#g' ./Makefile
 sed -i 's#https://github.com/v2fly/geoip/releases/download/$(GEOIP_VER)/#https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/#g' ./Makefile
 sed -i 's#https://github.com/v2fly/domain-list-community/releases/download/$(GEOSITE_VER)/#https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/#g' ./Makefile
+echo '----------------------------------------------------'
+cat ./Makefile
+echo '----------------------------------------------------'
 popd
 
 pushd ./my-feeds
