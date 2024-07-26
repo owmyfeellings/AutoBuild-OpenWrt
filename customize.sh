@@ -6,8 +6,9 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
-echo $HOME
-tree -a -C -f ./openwrt
+echo "home dir is: "$HOME
+echo "current dir is: "$PWD
+#tree -a -C -f ./openwrt
 
 pushd ./openwrt
 sed -i 's/192.168.1.1/192.168.10.2/g' ./package/base-files/files/bin/config_generate
@@ -16,7 +17,7 @@ sed -i '/luci.main.mediaurlbase/d' ./package/feeds/luci/luci-theme-design/root/e
 sed -i '/luci.main.mediaurlbase/d' ./package/feeds/infinityfreedom_ng/luci-theme-infinityfreedom-ng/files/11_luci-theme-infinityfreedom-ng
 popd
 
-pushd ./openwrt/package/feeds/lienol/v2ray-geodata
+pushd $(find ./openwrt/package/feeds -type d -name 'v2ray-geodata')
 sed -i 's#'$(grep -E -a --line-buffered 'GEOIP_VER:=' ./Makefile)'#GEOIP_VER:=latest#g' ./Makefile
 sed -i 's#'$(grep -E -a --line-buffered 'GEOSITE_VER:=' ./Makefile)'#GEOSITE_VER:=latest#g' ./Makefile
 sed -i 's#'$(grep -E -a --line-buffered 'HASH:=' ./Makefile)'#HASH:=skip#g' ./Makefile
