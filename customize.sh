@@ -6,6 +6,8 @@
 # Youtube Channel: https://goo.gl/fvkdwm 
 #=================================================
 
+tree -L ./openwrt
+
 pushd ./openwrt
 sed -i 's/192.168.1.1/192.168.10.2/g' ./package/base-files/files/bin/config_generate
 sed -i 's#$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.##g' ./package/lean/default-settings/files/zzz-default-settings
