@@ -61,14 +61,13 @@ jobs:
           cat ./feeds-ext.conf >> ./openwrt/feeds.conf.default
           mkdir -p ./my-feeds
           pushd ./my-feeds
-          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon ./luci-theme-argon
-          git clone -b 18.06 https://github.com/kiddin9/luci-theme-edge ./luci-theme-edge
-          git clone -b master https://github.com/sirpdboy/luci-theme-opentopd ./luci-theme-opentopd
-          git clone -b master https://github.com/esirplayground/luci-theme-atmaterial-ColorIcon ./luci-theme-atmaterial-ColorIcon
-          git clone -b 18.06 https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
-          git clone -b main https://github.com/thinktip/luci-theme-neobird ./luci-theme-neobird
-          git clone -b master https://github.com/Leo-Jo-My/luci-theme-opentomcat ./luci-theme-opentomcat
           git clone -b main https://github.com/sirpdboy/chatgpt-web ./luci-app-chatgpt
+          git clone -b master https://github.com/jerrykuku/luci-theme-argon ./luci-theme-argon
+          git clone -b master https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
+          #git clone -b master https://github.com/kiddin9/luci-theme-edge ./luci-theme-edge
+          #git clone -b master https://github.com/sirpdboy/luci-theme-opentopd ./luci-theme-opentopd
+          #git clone -b main https://github.com/thinktip/luci-theme-neobird ./luci-theme-neobird
+          #git clone -b master https://github.com/Leo-Jo-My/luci-theme-opentomcat ./luci-theme-opentomcat
           popd
           echo "src-link my_feeds $(cd ./my-feeds && pwd)" >> ./openwrt/feeds.conf.default
 
