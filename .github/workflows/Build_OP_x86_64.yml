@@ -64,10 +64,9 @@ jobs:
           git clone -b main https://github.com/sirpdboy/chatgpt-web ./luci-app-chatgpt
           git clone -b master https://github.com/jerrykuku/luci-theme-argon ./luci-theme-argon
           git clone -b master https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
-          #git clone -b master https://github.com/kiddin9/luci-theme-edge ./luci-theme-edge
-          #git clone -b master https://github.com/sirpdboy/luci-theme-opentopd ./luci-theme-opentopd
-          #git clone -b main https://github.com/thinktip/luci-theme-neobird ./luci-theme-neobird
-          #git clone -b master https://github.com/Leo-Jo-My/luci-theme-opentomcat ./luci-theme-opentomcat
+          git clone -b master https://github.com/derisamedia/luci-theme-alpha ./luci-theme-alpha
+          git clone -b js https://github.com/sirpdboy/luci-theme-kucat ./luci-theme-kucat
+          git clone -b main https://github.com/sirpdboy/luci-app-advancedplus ./luci-app-advancedplus
           popd
           echo "src-link my_feeds $(cd ./my-feeds && pwd)" >> ./openwrt/feeds.conf.default
 
@@ -91,6 +90,7 @@ jobs:
         run: |
           make download -j$(nproc) V=s
           find dl -size -1024c -exec rm -f {} \;
+          make download -j$(nproc) V=s
 
       - name: Build firmware
         working-directory: ./openwrt
