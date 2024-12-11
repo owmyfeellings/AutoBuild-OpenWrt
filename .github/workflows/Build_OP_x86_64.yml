@@ -67,6 +67,11 @@ jobs:
           git clone -b master https://github.com/derisamedia/luci-theme-alpha ./luci-theme-alpha
           git clone -b js https://github.com/sirpdboy/luci-theme-kucat ./luci-theme-kucat
           git clone -b main https://github.com/sirpdboy/luci-app-advancedplus ./luci-app-advancedplus
+
+          git clone https://github.com/kenzok8/openwrt-packages kenzok8
+          rm -rf luci-app-gost gost
+          mv kenzok8/luci-app-gost kenzok8/gost ./
+          rm -rf kenzok8
           popd
           echo "src-link my_feeds $(cd ./my-feeds && pwd)" >> ./openwrt/feeds.conf.default
 
@@ -75,6 +80,9 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a -f -p my_feeds
+          ./scripts/feeds install -a -f -p passwall2
+          ./scripts/feeds install -a -f -p lienol
+          ./scripts/feeds install -a -f -p mosdns
           ./scripts/feeds install -a -f
 
       - name: Configuration Customization - Build_x86_64
