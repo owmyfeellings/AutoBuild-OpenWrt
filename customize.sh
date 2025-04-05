@@ -7,8 +7,8 @@
 #=================================================
 
 pushd ./openwrt
-sed -i 's/192.168.1.1/192.168.10.2/g' ./package/base-files/files/bin/config_generate
 sed -i 's#$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.##g' ./package/lean/default-settings/files/zzz-default-settings
+#sed -i 's/192.168.1.1/192.168.10.1/g' ./package/base-files/files/bin/config_generate
 #sed -i 's/^\(PKG_VERSION:=\).*/\1main/' ./feeds/lienol/xray-core/Makefile
 #sed -i 's/^\(PKG_HASH:=\).*/\1skip/' ./feeds/lienol/xray-core/Makefile
 #sed -i 's/v$(PKG_VERSION)/main/' ./feeds/lienol/xray-core/Makefile
