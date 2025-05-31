@@ -123,7 +123,7 @@ jobs:
         run: |
           set +e
           pushd ./openwrt/bin
-          zip -9mvr ../../openwrt.zip ./
+          zip -9vr ../../openwrt.zip ./
           popd
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
           gh release delete openwrt -y --cleanup-tag
