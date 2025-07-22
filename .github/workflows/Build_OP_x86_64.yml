@@ -69,6 +69,8 @@ jobs:
           git clone --depth 1 -b master https://github.com/derisamedia/luci-theme-alpha ./luci-theme-alpha
           git clone --depth 1 -b js https://github.com/sirpdboy/luci-theme-kucat ./luci-theme-kucat
           git clone --depth 1 -b main https://github.com/sirpdboy/luci-app-advancedplus ./luci-app-advancedplus
+          git clone --depth 1 -b master https://github.com/pymumu/luci-app-smartdns ./luci-app-smartdns
+          git clone --depth 1 -b master https://github.com/pymumu/openwrt-smartdns ./smartdns
           popd
 
       - name: Merge feed config
