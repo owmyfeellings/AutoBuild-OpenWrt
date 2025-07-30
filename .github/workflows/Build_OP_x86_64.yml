@@ -61,22 +61,21 @@ jobs:
 
       - name: Import external feeds
         run: |
-          mkdir -p ./my-feeds
-          pushd ./my-feeds
-          git clone --depth 1 -b main https://github.com/sirpdboy/chatgpt-web ./luci-app-chatgpt
-          git clone --depth 1 -b master https://github.com/jerrykuku/luci-theme-argon ./luci-theme-argon
-          git clone --depth 1 -b master https://github.com/jerrykuku/luci-app-argon-config ./luci-app-argon-config
-          git clone --depth 1 -b master https://github.com/derisamedia/luci-theme-alpha ./luci-theme-alpha
-          git clone --depth 1 -b js https://github.com/sirpdboy/luci-theme-kucat ./luci-theme-kucat
-          git clone --depth 1 -b main https://github.com/sirpdboy/luci-app-advancedplus ./luci-app-advancedplus
-          git clone --depth 1 -b master https://github.com/pymumu/luci-app-smartdns ./luci-app-smartdns
-          git clone --depth 1 -b master https://github.com/pymumu/openwrt-smartdns ./smartdns
+          mkdir -p ./custom
+          pushd ./custom
+          git clone --depth 1 -b main https://github.com/kenzok8/golang golang
+          git clone --depth 1 -b master https://github.com/sbwml/v2ray-geodata v2ray-geodata
+          git clone --depth 1 -b master https://github.com/jerrykuku/luci-theme-argon luci-theme-argon
+          git clone --depth 1 -b master https://github.com/jerrykuku/luci-app-argon-config luci-app-argon-config
+          git clone --depth 1 -b main https://github.com/sirpdboy/luci-app-advancedplus luci-app-advancedplus
+          git clone --depth 1 -b master https://github.com/pymumu/luci-app-smartdns luci-app-smartdns
+          git clone --depth 1 -b master https://github.com/pymumu/openwrt-smartdns smartdns
           popd
 
       - name: Merge feed config
         run: |
           cp -f ./openwrt/feeds.conf.default ./feeds.conf.temp
-          { echo "src-link my_feeds $(cd ./my-feeds && pwd)"; cat ./feeds-ext.conf; cat ./feeds.conf.temp; } > ./openwrt/feeds.conf.default
+          { echo "src-link custom $(cd ./custom && pwd)"; cat ./feeds-ext.conf; cat ./feeds.conf.temp; } > ./openwrt/feeds.conf.default
           rm -f ./feeds.conf.temp
 
       - name: Update & Install feeds
@@ -84,16 +83,6 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a -f
-
-      - name: List feeds config
-        working-directory: ./openwrt
-        run: |
-          cat feeds.conf.default
-
-      - name: Show installed feeds
-        working-directory: ./openwrt/package/feeds
-        run: |
-          find ./ -type l
 
       - name: Configuration Customization - Build_x86_64
         env:
